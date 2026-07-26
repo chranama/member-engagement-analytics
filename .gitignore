@@ -1,0 +1,14 @@
+# Downloaded source data
+data/raw/*.csv
+
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Package build artifacts
+dist/
+*.egg-info/
