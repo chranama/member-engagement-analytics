@@ -1,0 +1,666 @@
+{
+  "checks": [
+    {
+      "code": "customers.file_readable",
+      "message": "customer_data.csv is readable.",
+      "metrics": {},
+      "status": "pass"
+    },
+    {
+      "code": "customers.byte_size",
+      "message": "customer_data.csv has the expected byte size.",
+      "metrics": {
+        "expected": 23519477,
+        "observed": 23519477
+      },
+      "status": "pass"
+    },
+    {
+      "code": "customers.checksum",
+      "message": "customer_data.csv matches the expected SHA-256 checksum.",
+      "metrics": {
+        "expected": "bb3865b68c247caaa28821238c3d9fa9c745ca8837c42f89b5d7e310beb98c8d",
+        "observed": "bb3865b68c247caaa28821238c3d9fa9c745ca8837c42f89b5d7e310beb98c8d"
+      },
+      "status": "pass"
+    },
+    {
+      "code": "customers.header",
+      "message": "customer_data.csv has the expected columns in the expected order.",
+      "metrics": {
+        "expected_columns": 54,
+        "missing_columns": [],
+        "observed_columns": 54,
+        "order_matches": true,
+        "unexpected_columns": []
+      },
+      "status": "pass"
+    },
+    {
+      "code": "customers.row_count",
+      "message": "customer_data.csv has the expected number of data rows.",
+      "metrics": {
+        "expected": 48723,
+        "observed": 48723
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.file_readable",
+      "message": "transactions_data.csv is readable.",
+      "metrics": {},
+      "status": "pass"
+    },
+    {
+      "code": "transactions.byte_size",
+      "message": "transactions_data.csv has the expected byte size.",
+      "metrics": {
+        "expected": 119006497,
+        "observed": 119006497
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.checksum",
+      "message": "transactions_data.csv matches the expected SHA-256 checksum.",
+      "metrics": {
+        "expected": "09fa21b8d74692cbfbf10ee58b55b00c874280a57aa926650e2fe55c60859ec6",
+        "observed": "09fa21b8d74692cbfbf10ee58b55b00c874280a57aa926650e2fe55c60859ec6"
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.header",
+      "message": "transactions_data.csv has the expected columns in the expected order.",
+      "metrics": {
+        "expected_columns": 4,
+        "missing_columns": [],
+        "observed_columns": 4,
+        "order_matches": true,
+        "unexpected_columns": []
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.row_count",
+      "message": "transactions_data.csv has the expected number of data rows.",
+      "metrics": {
+        "expected": 3159157,
+        "observed": 3159157
+      },
+      "status": "pass"
+    },
+    {
+      "code": "files.csv_readability",
+      "message": "DuckDB scanned both raw CSV files without persisting data.",
+      "metrics": {
+        "expected_rows": {
+          "customers": 48723,
+          "transactions": 3159157
+        },
+        "scanned_rows": {
+          "customers": 48723,
+          "transactions": 3159157
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "code": "customers.schema_parseability",
+      "message": "All non-empty customer values parse to their expected types.",
+      "metrics": {
+        "affected_columns": 0,
+        "failed_values": 0
+      },
+      "status": "pass"
+    },
+    {
+      "code": "customers.primary_key",
+      "message": "Customer identifiers are non-null and unique.",
+      "metrics": {
+        "distinct_ids": 48723,
+        "duplicate_id_rows": 0,
+        "null_ids": 0
+      },
+      "status": "pass"
+    },
+    {
+      "code": "customers.categories",
+      "message": "Contracted customer categories contain only expected values.",
+      "metrics": {
+        "unexpected_values": {}
+      },
+      "status": "pass"
+    },
+    {
+      "code": "customers.business_ranges",
+      "message": "Customer values fall within the inspected business ranges.",
+      "metrics": {
+        "age_outside_expected_range": 0,
+        "app_rating_outside_expected_range": 0,
+        "churn_probability_outside_zero_one": 0,
+        "credit_utilization_outside_zero_one": 0,
+        "household_size_below_one": 0,
+        "negative_active_products": 0,
+        "negative_app_logins": 0,
+        "negative_failed_transactions": 0,
+        "nps_outside_expected_range": 0,
+        "resolved_ticket_ratio_outside_zero_one": 0,
+        "weekend_ratio_outside_zero_one": 0
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.schema_parseability",
+      "message": "All non-empty transaction values parse to their expected types.",
+      "metrics": {
+        "affected_columns": 0,
+        "failed_values": 0
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.required_values",
+      "message": "All required transaction values are present.",
+      "metrics": {
+        "by_column": {
+          "amount": 0,
+          "customer_id": 0,
+          "date": 0,
+          "type": 0
+        },
+        "null_or_empty_values": 0
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.categories",
+      "message": "Transaction types contain only expected values.",
+      "metrics": {
+        "unexpected_values": {}
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.ranges",
+      "message": "Transaction dates and amounts satisfy the inspected ranges.",
+      "metrics": {
+        "dates_outside_observation_window": 0,
+        "negative_amount_rows": 0,
+        "zero_amount_rows": 0
+      },
+      "status": "pass"
+    },
+    {
+      "code": "transactions.duplicate_looking_rows",
+      "message": "Exact duplicate-looking transaction rows require interpretation.",
+      "metrics": {
+        "duplicate_groups": 102,
+        "excess_duplicate_rows": 102
+      },
+      "status": "warning"
+    },
+    {
+      "code": "relationships.transaction_customers",
+      "message": "Every transaction resolves to a customer.",
+      "metrics": {
+        "orphan_customer_ids": 0,
+        "orphan_transaction_rows": 0
+      },
+      "status": "pass"
+    },
+    {
+      "code": "relationships.customers_without_transactions",
+      "message": "Every customer has at least one transaction row.",
+      "metrics": {
+        "customers_without_transactions": 0
+      },
+      "status": "pass"
+    },
+    {
+      "code": "relationships.transaction_count_concentration",
+      "message": "The transaction-count distribution contains an extreme upper tail.",
+      "metrics": {
+        "maximum": 77465,
+        "maximum_to_p95_ratio": 513.35,
+        "p95": 150.9,
+        "review_threshold_ratio": 10
+      },
+      "status": "warning"
+    },
+    {
+      "code": "relationships.publisher_derived_aggregates",
+      "message": "Publisher-derived customer fields differ from ledger aggregates.",
+      "metrics": {
+        "customers_compared": 48723,
+        "first_transaction_date_mismatches": 0,
+        "first_tx_mismatches": 0,
+        "last_transaction_date_mismatches": 46989,
+        "last_tx_mismatches": 0,
+        "total_transaction_volume_mismatches": 48722,
+        "total_tx_volume_mismatches": 0,
+        "tx_count_mismatches": 0
+      },
+      "status": "warning"
+    }
+  ],
+  "dataset": {
+    "name": "COFINFAD: Colombian Fintech Financial Analytics Dataset",
+    "source_url": "https://data.mendeley.com/datasets/mhb4zn3258/1",
+    "version": "1"
+  },
+  "files": {
+    "customers": {
+      "byte_size": 23519477,
+      "data_rows": 48723,
+      "filename": "customer_data.csv",
+      "headers": [
+        "customer_id",
+        "age",
+        "gender",
+        "location",
+        "income_bracket",
+        "occupation",
+        "education_level",
+        "marital_status",
+        "household_size",
+        "acquisition_channel",
+        "customer_segment",
+        "savings_account",
+        "credit_card",
+        "personal_loan",
+        "investment_account",
+        "insurance_product",
+        "active_products",
+        "app_logins_frequency",
+        "feature_usage_diversity",
+        "bill_payment_user",
+        "auto_savings_enabled",
+        "credit_utilization_ratio",
+        "international_transactions",
+        "failed_transactions",
+        "tx_count",
+        "avg_tx_value",
+        "total_tx_volume",
+        "first_tx",
+        "last_tx",
+        "base_satisfaction",
+        "tx_satisfaction",
+        "product_satisfaction",
+        "satisfaction_score",
+        "nps_score",
+        "last_survey_date",
+        "support_tickets_count",
+        "resolved_tickets_ratio",
+        "app_store_rating",
+        "feedback_sentiment",
+        "feature_requests",
+        "complaint_topics",
+        "clv_segment",
+        "monthly_transaction_count",
+        "average_transaction_value",
+        "total_transaction_volume",
+        "transaction_frequency",
+        "last_transaction_date",
+        "preferred_transaction_type",
+        "first_transaction_date",
+        "weekend_transaction_ratio",
+        "avg_daily_transactions",
+        "customer_tenure",
+        "churn_probability",
+        "customer_lifetime_value"
+      ],
+      "present": true,
+      "sha256": "bb3865b68c247caaa28821238c3d9fa9c745ca8837c42f89b5d7e310beb98c8d"
+    },
+    "transactions": {
+      "byte_size": 119006497,
+      "data_rows": 3159157,
+      "filename": "transactions_data.csv",
+      "headers": [
+        "customer_id",
+        "date",
+        "amount",
+        "type"
+      ],
+      "present": true,
+      "sha256": "09fa21b8d74692cbfbf10ee58b55b00c874280a57aa926650e2fe55c60859ec6"
+    }
+  },
+  "profiles": {
+    "customers": {
+      "business_range_violations": {
+        "age_outside_expected_range": 0,
+        "app_rating_outside_expected_range": 0,
+        "churn_probability_outside_zero_one": 0,
+        "credit_utilization_outside_zero_one": 0,
+        "household_size_below_one": 0,
+        "negative_active_products": 0,
+        "negative_app_logins": 0,
+        "negative_failed_transactions": 0,
+        "nps_outside_expected_range": 0,
+        "resolved_ticket_ratio_outside_zero_one": 0,
+        "weekend_ratio_outside_zero_one": 0
+      },
+      "category_frequencies": {
+        "acquisition_channel": {
+          "Organic": 19500,
+          "Paid Ad": 9764,
+          "Partnership": 4913,
+          "Referral": 14546
+        },
+        "auto_savings_enabled": {
+          "False": 29173,
+          "True": 19550
+        },
+        "bill_payment_user": {
+          "False": 14553,
+          "True": 34170
+        },
+        "clv_segment": {
+          "Bronze": 12181,
+          "Gold": 12180,
+          "Platinum": 12181,
+          "Silver": 12181
+        },
+        "credit_card": {
+          "False": 18263,
+          "True": 30460
+        },
+        "customer_segment": {
+          "inactive": 9904,
+          "occasional": 19391,
+          "power": 4860,
+          "regular": 14568
+        },
+        "education_level": {
+          "Bachelor": 19685,
+          "High School": 19263,
+          "Master": 7359,
+          "PhD": 2416
+        },
+        "feedback_sentiment": {
+          "Negative": 1480,
+          "Neutral": 8346,
+          "Positive": 38897
+        },
+        "gender": {
+          "Female": 24033,
+          "Male": 23761,
+          "Other": 929
+        },
+        "income_bracket": {
+          "High": 12180,
+          "Low": 14617,
+          "Medium": 19489,
+          "Very High": 2437
+        },
+        "insurance_product": {
+          "False": 38388,
+          "True": 10335
+        },
+        "investment_account": {
+          "False": 27985,
+          "True": 20738
+        },
+        "marital_status": {
+          "Divorced": 4954,
+          "Married": 19615,
+          "Single": 21769,
+          "Widowed": 2385
+        },
+        "personal_loan": {
+          "False": 33321,
+          "True": 15402
+        },
+        "preferred_transaction_type": {
+          "Deposit": 441,
+          "Payment": 10002,
+          "Transfer": 36954,
+          "Withdrawal": 1326
+        },
+        "savings_account": {
+          "False": 10264,
+          "True": 38459
+        }
+      },
+      "credit_card_holders": 30460,
+      "expected_types": {
+        "acquisition_channel": "VARCHAR",
+        "active_products": "INTEGER",
+        "age": "INTEGER",
+        "app_logins_frequency": "INTEGER",
+        "app_store_rating": "DOUBLE",
+        "auto_savings_enabled": "BOOLEAN",
+        "average_transaction_value": "DOUBLE",
+        "avg_daily_transactions": "DOUBLE",
+        "avg_tx_value": "DOUBLE",
+        "base_satisfaction": "DOUBLE",
+        "bill_payment_user": "BOOLEAN",
+        "churn_probability": "DOUBLE",
+        "clv_segment": "VARCHAR",
+        "complaint_topics": "VARCHAR",
+        "credit_card": "BOOLEAN",
+        "credit_utilization_ratio": "DOUBLE",
+        "customer_id": "BIGINT",
+        "customer_lifetime_value": "DOUBLE",
+        "customer_segment": "VARCHAR",
+        "customer_tenure": "DOUBLE",
+        "education_level": "VARCHAR",
+        "failed_transactions": "INTEGER",
+        "feature_requests": "VARCHAR",
+        "feature_usage_diversity": "INTEGER",
+        "feedback_sentiment": "VARCHAR",
+        "first_transaction_date": "DATE",
+        "first_tx": "DATE",
+        "gender": "VARCHAR",
+        "household_size": "INTEGER",
+        "income_bracket": "VARCHAR",
+        "insurance_product": "BOOLEAN",
+        "international_transactions": "INTEGER",
+        "investment_account": "BOOLEAN",
+        "last_survey_date": "DATE",
+        "last_transaction_date": "DATE",
+        "last_tx": "DATE",
+        "location": "VARCHAR",
+        "marital_status": "VARCHAR",
+        "monthly_transaction_count": "DOUBLE",
+        "nps_score": "INTEGER",
+        "occupation": "VARCHAR",
+        "personal_loan": "BOOLEAN",
+        "preferred_transaction_type": "VARCHAR",
+        "product_satisfaction": "DOUBLE",
+        "resolved_tickets_ratio": "DOUBLE",
+        "satisfaction_score": "INTEGER",
+        "savings_account": "BOOLEAN",
+        "support_tickets_count": "INTEGER",
+        "total_transaction_volume": "DECIMAL(20,2)",
+        "total_tx_volume": "DECIMAL(20,2)",
+        "transaction_frequency": "DOUBLE",
+        "tx_count": "INTEGER",
+        "tx_satisfaction": "DOUBLE",
+        "weekend_transaction_ratio": "DOUBLE"
+      },
+      "key_metrics": {
+        "distinct_ids": 48723,
+        "duplicate_id_rows": 0,
+        "null_ids": 0,
+        "rows": 48723
+      },
+      "null_counts": {
+        "acquisition_channel": 0,
+        "active_products": 0,
+        "age": 0,
+        "app_logins_frequency": 0,
+        "app_store_rating": 0,
+        "auto_savings_enabled": 0,
+        "average_transaction_value": 0,
+        "avg_daily_transactions": 0,
+        "avg_tx_value": 0,
+        "base_satisfaction": 0,
+        "bill_payment_user": 0,
+        "churn_probability": 0,
+        "clv_segment": 0,
+        "complaint_topics": 24346,
+        "credit_card": 0,
+        "credit_utilization_ratio": 18263,
+        "customer_id": 0,
+        "customer_lifetime_value": 0,
+        "customer_segment": 0,
+        "customer_tenure": 0,
+        "education_level": 0,
+        "failed_transactions": 0,
+        "feature_requests": 16115,
+        "feature_usage_diversity": 0,
+        "feedback_sentiment": 0,
+        "first_transaction_date": 0,
+        "first_tx": 0,
+        "gender": 0,
+        "household_size": 0,
+        "income_bracket": 0,
+        "insurance_product": 0,
+        "international_transactions": 0,
+        "investment_account": 0,
+        "last_survey_date": 0,
+        "last_transaction_date": 0,
+        "last_tx": 0,
+        "location": 0,
+        "marital_status": 0,
+        "monthly_transaction_count": 0,
+        "nps_score": 0,
+        "occupation": 0,
+        "personal_loan": 0,
+        "preferred_transaction_type": 0,
+        "product_satisfaction": 0,
+        "resolved_tickets_ratio": 0,
+        "satisfaction_score": 0,
+        "savings_account": 0,
+        "support_tickets_count": 0,
+        "total_transaction_volume": 0,
+        "total_tx_volume": 0,
+        "transaction_frequency": 0,
+        "tx_count": 0,
+        "tx_satisfaction": 0,
+        "weekend_transaction_ratio": 0
+      },
+      "parse_failures": {
+        "active_products": 0,
+        "age": 0,
+        "app_logins_frequency": 0,
+        "app_store_rating": 0,
+        "auto_savings_enabled": 0,
+        "average_transaction_value": 0,
+        "avg_daily_transactions": 0,
+        "avg_tx_value": 0,
+        "base_satisfaction": 0,
+        "bill_payment_user": 0,
+        "churn_probability": 0,
+        "credit_card": 0,
+        "credit_utilization_ratio": 0,
+        "customer_id": 0,
+        "customer_lifetime_value": 0,
+        "customer_tenure": 0,
+        "failed_transactions": 0,
+        "feature_usage_diversity": 0,
+        "first_transaction_date": 0,
+        "first_tx": 0,
+        "household_size": 0,
+        "insurance_product": 0,
+        "international_transactions": 0,
+        "investment_account": 0,
+        "last_survey_date": 0,
+        "last_transaction_date": 0,
+        "last_tx": 0,
+        "monthly_transaction_count": 0,
+        "nps_score": 0,
+        "personal_loan": 0,
+        "product_satisfaction": 0,
+        "resolved_tickets_ratio": 0,
+        "satisfaction_score": 0,
+        "savings_account": 0,
+        "support_tickets_count": 0,
+        "total_transaction_volume": 0,
+        "total_tx_volume": 0,
+        "transaction_frequency": 0,
+        "tx_count": 0,
+        "tx_satisfaction": 0,
+        "weekend_transaction_ratio": 0
+      },
+      "row_count": 48723
+    },
+    "relationships": {
+      "customers_without_transactions": 0,
+      "orphan_customer_ids": 0,
+      "orphan_transaction_rows": 0,
+      "publisher_aggregate_comparison": {
+        "customers_compared": 48723,
+        "first_transaction_date_mismatches": 0,
+        "first_tx_mismatches": 0,
+        "last_transaction_date_mismatches": 46989,
+        "last_tx_mismatches": 0,
+        "total_transaction_volume_mismatches": 48722,
+        "total_tx_volume_mismatches": 0,
+        "tx_count_mismatches": 0
+      },
+      "transactions_per_customer": {
+        "customers_with_transactions": 48723,
+        "maximum": 77465,
+        "maximum_to_p95_ratio": 513.35,
+        "mean": 64.8391,
+        "median": 18.0,
+        "minimum": 10,
+        "p95": 150.9
+      }
+    },
+    "transactions": {
+      "amount_cop": {
+        "maximum": "689739900.00",
+        "minimum": "36400.00",
+        "negative_rows": 0,
+        "total": "12544849568700.00",
+        "zero_rows": 0
+      },
+      "category_frequencies": {
+        "type": {
+          "Deposit": 298069,
+          "Payment": 970548,
+          "Transfer": 1433963,
+          "Withdrawal": 456577
+        }
+      },
+      "date_range": {
+        "maximum": "2023-12-29",
+        "minimum": "2023-01-04"
+      },
+      "duplicate_looking_rows": {
+        "duplicate_groups": 102,
+        "excess_duplicate_rows": 102
+      },
+      "expected_types": {
+        "amount": "DECIMAL(20,2)",
+        "customer_id": "BIGINT",
+        "date": "DATE",
+        "type": "VARCHAR"
+      },
+      "null_counts": {
+        "amount": 0,
+        "customer_id": 0,
+        "date": 0,
+        "type": 0
+      },
+      "parse_failures": {
+        "amount": 0,
+        "customer_id": 0,
+        "date": 0
+      },
+      "row_count": 3159157
+    }
+  },
+  "raw_directory": "data/raw",
+  "report_schema_version": 1,
+  "summary": {
+    "fail": 0,
+    "pass": 21,
+    "warning": 3
+  }
+}

@@ -38,6 +38,50 @@ The analysis will use two source files:
 
 Monetary values are denominated in Colombian pesos. The dataset is available under the CC BY 4.0 license from Mendeley Data. A separate [Hugging Face dataset card](https://huggingface.co/datasets/luisdavidtrejosrojas/cofinfad) provides a field-level data dictionary.
 
+## Local database
+
+The project uses DuckDB as a reproducible local analytical database. Raw CSVs
+are loaded into typed, source-faithful tables; the generated database and raw
+files are intentionally excluded from Git.
+
+After placing both source files in `data/raw/`, create the environment and run
+the database build:
+
+```bash
+uv sync --locked
+uv run --locked python -m member_engagement_analytics.build_database
+```
+
+The command reruns the complete raw-data preflight, builds a temporary database,
+validates the loaded tables, and publishes it only after all blocking checks
+pass:
+
+```text
+data/processed/member_engagement.duckdb
+```
+
+An existing database is protected unless replacement is explicit:
+
+```bash
+uv run --locked python -m member_engagement_analytics.build_database --replace
+```
+
+Analysis code should use the package's read-only connection helper:
+
+```python
+from member_engagement_analytics.database import open_database
+
+with open_database() as connection:
+    customer_count = connection.execute(
+        "SELECT count(*) FROM source.customers"
+    ).fetchone()[0]
+```
+
+The database contains `source.customers`, `source.transactions`,
+`meta.build_info`, and `meta.validation_results`. The `analytics` schema is
+reserved for approved analytical objects; no engagement metrics are defined
+there yet.
+
 ## Analytical approach
 
 The workflow will:

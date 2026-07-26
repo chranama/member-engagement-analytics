@@ -32,6 +32,9 @@ default-groups = ["analysis", "dev"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+markers = [
+    "full_data: opt-in tests that build from the complete local COFINFAD files",
+]
 
 [tool.ruff]
 line-length = 88

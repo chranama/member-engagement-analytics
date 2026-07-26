@@ -1,0 +1,3 @@
+CREATE SCHEMA source;
+CREATE SCHEMA analytics;
+CREATE SCHEMA meta;

@@ -56,6 +56,7 @@ Initial objects:
 source.customers
 source.transactions
 meta.build_info
+meta.validation_results
 ```
 
 Analytical objects such as `analytics.customer_transaction_summary` should be added only after their metric definitions and observation windows are approved in the analysis brief.
@@ -90,18 +91,25 @@ Grain: one source transaction record.
 | `transaction_date` | `DATE` | Not null; renamed from source column `date` |
 | `amount_cop` | `DECIMAL(20,2)` | Not null; renamed from `amount` and explicitly denominated in COP |
 | `transaction_type` | `VARCHAR` | Not null; renamed from source column `type` |
+| `is_duplicate_looking` | `BOOLEAN` | Not null; marks every row in an exact customer/date/amount/type duplicate group |
 
 The source has no transaction identifier. Exact duplicate-looking rows must therefore be preserved unless a later business rule supplies evidence that they are duplicate events.
 
 ## Build process
 
-The future database-build command should be:
+The database-build command is:
 
 ```bash
-uv run --locked python src/build_database.py
+uv run --locked python -m member_engagement_analytics.build_database
 ```
 
-The script must:
+Rebuilding an existing target requires explicit replacement:
+
+```bash
+uv run --locked python -m member_engagement_analytics.build_database --replace
+```
+
+The command:
 
 1. Resolve all paths relative to the repository root.
 2. Verify the source filenames, headers, sizes, and SHA-256 checksums.
@@ -110,8 +118,9 @@ The script must:
 5. Load and cast the source data.
 6. Run the required validation checks.
 7. Record provenance in `meta.build_info`.
-8. Checkpoint and close the database.
-9. Replace the prior generated database only after every validation passes.
+8. Record aggregate source and post-load checks in `meta.validation_results`.
+9. Checkpoint, close, and verify the database through a read-only connection.
+10. Replace the prior generated database only after every validation passes.
 
 This atomic-build pattern prevents a failed load from leaving a partially valid database at the expected production path.
 
@@ -151,6 +160,10 @@ Those conditions may be data-quality findings rather than load failures and must
 - Minimum and maximum transaction dates where applicable
 - Database-build timestamp in UTC
 - Build-script version or Git commit when available
+- Whether the Git worktree contained uncommitted changes at build time
+
+`meta.validation_results` records each aggregate check code, status, message,
+and JSON metrics. It does not store customer rows or customer identifiers.
 
 ## Access contract
 
@@ -159,12 +172,9 @@ Only the database-build script may open the database in write mode.
 All analysis code must use an explicit read-only connection:
 
 ```python
-import duckdb
+from member_engagement_analytics.database import open_database
 
-connection = duckdb.connect(
-    "data/processed/member_engagement.duckdb",
-    read_only=True,
-)
+connection = open_database()
 ```
 
 Analysis code must not issue `CREATE`, `INSERT`, `UPDATE`, `DELETE`, `DROP`, or `ALTER` statements. Temporary Python data frames are acceptable; persistent analytical database objects belong in the controlled build.
