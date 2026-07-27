@@ -46,11 +46,12 @@ src/member_engagement_analytics/
 └── validation.py
 
 sql/
-├── 001_create_schemas.sql
-├── 010_create_source_tables.sql
-├── 020_create_meta_tables.sql
-├── 100_load_customers.sql
-└── 110_load_transactions.sql
+└── db_build/
+    ├── 001_create_schemas.sql
+    ├── 010_create_source_tables.sql
+    ├── 020_create_meta_tables.sql
+    ├── 100_load_customers.sql
+    └── 110_load_transactions.sql
 
 tests/
 ├── fixtures/

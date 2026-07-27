@@ -1,0 +1,7 @@
+data_variant,scenario,threshold_days,customer_count,eligible_population_pct,transactions_prior_90d_q1,transactions_prior_90d_median,transactions_prior_90d_q3,zero_prior_90d_customers,zero_prior_90d_pct,transactions_full_period_median,active_months_median,insufficient_prior_history_customers,insufficient_prior_history_pct,customer_count_change_vs_canonical,prior_median_change_vs_canonical
+canonical,More than 30 days,30,5835,19.16,2.00,4.00,5.00,101,1.73,13.00,8.00,1,0.02,0,0.00
+canonical,More than 60 days,60,1686,5.54,2.00,4.00,5.00,22,1.30,12.00,7.00,0,0.00,0,0.00
+canonical,More than 90 days,90,457,1.50,3.00,4.00,5.00,4,0.88,11.00,7.00,0,0.00,0,0.00
+exact_groups_collapsed,More than 30 days,30,5835,19.16,2.00,4.00,5.00,101,1.73,13.00,8.00,1,0.02,0,0.00
+exact_groups_collapsed,More than 60 days,60,1686,5.54,2.00,4.00,5.00,22,1.30,12.00,7.00,0,0.00,0,0.00
+exact_groups_collapsed,More than 90 days,90,457,1.50,3.00,4.00,5.00,4,0.88,11.00,7.00,0,0.00,0,0.00

@@ -185,7 +185,8 @@ Analysis code must not issue `CREATE`, `INSERT`, `UPDATE`, `DELETE`, `DROP`, or 
 - Transfer only analysis-ready aggregates or bounded samples into pandas.
 - Do not create manual indexes initially. DuckDB is columnar and provides automatic data-skipping metadata; add an index only after measuring a specific query problem.
 - Use `EXPLAIN ANALYZE` before adding performance-oriented complexity.
-- Keep analytical SQL in version-controlled files under `sql/`.
+- Keep database-build SQL under `sql/db_build/` and analytical SQL under
+  `sql/analysis/`.
 - Use deterministic ordering whenever row order affects an exported result.
 
 ## Security and portability

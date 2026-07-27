@@ -30,7 +30,7 @@ from member_engagement_analytics.validation import (
 )
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
-SQL_DIRECTORY = REPOSITORY_ROOT / "sql"
+DATABASE_BUILD_SQL_DIRECTORY = REPOSITORY_ROOT / "sql/db_build"
 DEFAULT_RAW_DIRECTORY = REPOSITORY_ROOT / "data/raw"
 DEFAULT_DATABASE_PATH = REPOSITORY_ROOT / "data/processed/member_engagement.duckdb"
 
@@ -72,7 +72,7 @@ def _resolved_repository_path(path: Path) -> Path:
 
 
 def _read_sql(filename: str) -> str:
-    path = SQL_DIRECTORY / filename
+    path = DATABASE_BUILD_SQL_DIRECTORY / filename
     try:
         return path.read_text(encoding="utf-8")
     except OSError as error:

@@ -82,6 +82,33 @@ The database contains `source.customers`, `source.transactions`,
 reserved for approved analytical objects; no engagement metrics are defined
 there yet.
 
+## Initial recency analysis
+
+The first completed analysis slice measures overall transaction recency among
+recorded credit-card holders and compares the recent 90 days with the preceding
+90 days:
+
+```bash
+uv run --locked python -m member_engagement_analytics.recency_analysis
+```
+
+The command reads the DuckDB database without modifying it and reproduces:
+
+- the aggregate recency-scenario table under `reports/tables/`;
+- two figures under `reports/figures/`; and
+- `reports/cardholder-recency-baseline.md`.
+
+The executed notebook is:
+
+```text
+notebooks/01_cardholder_recency_baseline.ipynb
+```
+
+The analysis recommends using more than 60 days since the last recorded
+transaction as a screening threshold for the next slice, with more than 90
+days retained as a nested higher-recency group. This describes overall
+transaction recency and does not establish credit-card inactivity.
+
 ## Analytical approach
 
 The workflow will:
