@@ -18,7 +18,7 @@ from member_engagement_analytics.database import (
     build_database,
     open_database,
 )
-from member_engagement_analytics.validation import (
+from member_engagement_analytics.raw_data_validation import (
     CUSTOMER_HEADERS,
     CheckResult,
     CheckStatus,

@@ -1,4 +1,4 @@
-"""Inspect and validate the raw COFINFAD CSV files without persisting data."""
+"""Inspect and validate the raw COFINFAD CSV sources without persisting data."""
 
 from __future__ import annotations
 

@@ -49,7 +49,23 @@ the database build:
 
 ```bash
 uv sync --locked
-uv run --locked python -m member_engagement_analytics.build_database
+uv run --locked member-engagement-analytics build-database
+```
+
+All command-line workflows enter through the same interface. Available
+subcommands can be inspected with:
+
+```bash
+uv run --locked member-engagement-analytics --help
+```
+
+See the [operational runbook](docs/runbook.md) for the complete execution,
+recovery, and handoff procedures.
+
+The raw files can be inspected independently before a build:
+
+```bash
+uv run --locked member-engagement-analytics preflight
 ```
 
 The command reruns the complete raw-data preflight, builds a temporary database,
@@ -63,7 +79,7 @@ data/processed/member_engagement.duckdb
 An existing database is protected unless replacement is explicit:
 
 ```bash
-uv run --locked python -m member_engagement_analytics.build_database --replace
+uv run --locked member-engagement-analytics build-database --replace
 ```
 
 Analysis code should use the package's read-only connection helper:
@@ -82,6 +98,29 @@ The database contains `source.customers`, `source.transactions`,
 reserved for approved analytical objects; no engagement metrics are defined
 there yet.
 
+Check the current generated artifact independently of its original build:
+
+```bash
+uv run --locked member-engagement-analytics database-health
+```
+
+This command opens the database read-only and checks its schema, build
+provenance, persisted validation results, row counts, keys, relationships,
+ledger totals and dates, duplicate-looking flags, and complete aggregate table
+scans. It does not require the raw CSV files and atomically refreshes the
+aggregate operational report at:
+
+```text
+reports/database-health.json
+```
+
+Use `--output` to write the report to a different location.
+
+The test suite validates the build and health logic against controlled
+fixtures; the health command answers the separate operational question of
+whether the database file currently on disk remains usable and internally
+consistent.
+
 ## Initial recency analysis
 
 The first completed analysis slice measures overall transaction recency among
@@ -89,7 +128,7 @@ recorded credit-card holders and compares the recent 90 days with the preceding
 90 days:
 
 ```bash
-uv run --locked python -m member_engagement_analytics.recency_analysis
+uv run --locked member-engagement-analytics recency-analysis
 ```
 
 The command reads the DuckDB database without modifying it and reproduces:

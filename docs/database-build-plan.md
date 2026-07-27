@@ -20,13 +20,13 @@ The build will have two modes:
 Primary command:
 
 ```bash
-uv run --locked python -m member_engagement_analytics.build_database
+uv run --locked member-engagement-analytics build-database
 ```
 
 Rebuilding an existing target will require an explicit flag:
 
 ```bash
-uv run --locked python -m member_engagement_analytics.build_database --replace
+uv run --locked member-engagement-analytics build-database --replace
 ```
 
 Exit codes will match the preflight convention:
@@ -35,15 +35,16 @@ Exit codes will match the preflight convention:
 - `1`: source-data or post-load validation failure
 - `2`: configuration, filesystem, SQL, or other runtime failure
 
-## Proposed files
+## Implemented files
 
 ```text
 src/member_engagement_analytics/
-├── build_database.py   # CLI and build orchestration
+├── cli.py              # all argument parsing and command dispatch
 ├── database.py         # paths, SQL execution, build lifecycle, connections
-├── preflight.py
-├── reporting.py
-└── validation.py
+├── database_health.py  # read-only health inspection
+├── raw_data_validation.py
+├── recency_analysis.py
+└── render.py           # console and artifact rendering
 
 sql/
 └── db_build/
@@ -54,14 +55,17 @@ sql/
     └── 110_load_transactions.sql
 
 tests/
-├── fixtures/
-│   ├── customer_data.csv
-│   └── transactions_data.csv
+├── test_cli.py
 ├── test_database.py
-└── test_preflight.py
+├── test_database_full.py
+├── test_database_health.py
+├── test_preflight.py
+└── test_recency_analysis.py
 ```
 
-The implementation may extract shared dataset constants and repository-relative paths from `validation.py` into `config.py` if both preflight and database code otherwise duplicate them. It should not introduce a broad `utils.py`.
+Raw-file schemas, checks, and inspection logic belong in
+`raw_data_validation.py`. Repository-wide command parsing belongs only in
+`cli.py`; the project should not introduce a broad `utils.py`.
 
 ## Database objects
 
@@ -143,7 +147,7 @@ The later analytical layer should calculate canonical transaction metrics from `
 
 1. Keep the current preflight implementation and `uv.lock` as the source contract.
 2. Add generated database files and DuckDB write-ahead-log files to `.gitignore`.
-3. Update the database specification to use the package command rather than `src/build_database.py`.
+3. Update the database specification to use the centralized package CLI.
 4. Confirm the preflight passes with zero blocking failures before starting a build.
 
 Gate: preflight, tests, lint, formatting, and lockfile checks all pass.

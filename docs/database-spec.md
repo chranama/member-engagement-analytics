@@ -100,13 +100,13 @@ The source has no transaction identifier. Exact duplicate-looking rows must ther
 The database-build command is:
 
 ```bash
-uv run --locked python -m member_engagement_analytics.build_database
+uv run --locked member-engagement-analytics build-database
 ```
 
 Rebuilding an existing target requires explicit replacement:
 
 ```bash
-uv run --locked python -m member_engagement_analytics.build_database --replace
+uv run --locked member-engagement-analytics build-database --replace
 ```
 
 The command:
@@ -179,6 +179,17 @@ connection = open_database()
 
 Analysis code must not issue `CREATE`, `INSERT`, `UPDATE`, `DELETE`, `DROP`, or `ALTER` statements. Temporary Python data frames are acceptable; persistent analytical database objects belong in the controlled build.
 
+The current generated database can be inspected independently of its build:
+
+```bash
+uv run --locked member-engagement-analytics database-health
+```
+
+The command opens the artifact read-only, reruns structural and logical
+integrity checks, and returns `0` for a healthy database, `1` for a blocking
+health failure, or `2` for a command/runtime failure. It atomically refreshes
+`reports/database-health.json` by default; `--output` overrides that location.
+
 ## Query and performance policy
 
 - Perform joins, filtering, grouping, and large scans in DuckDB.
@@ -206,4 +217,5 @@ The database layer is complete when:
 - Required validations pass.
 - A Python smoke test opens the database read-only and successfully queries both source tables.
 - Attempts to modify the database through the analysis connection fail.
+- A standalone read-only health command validates the current generated artifact.
 - No raw or generated database file appears in Git status.

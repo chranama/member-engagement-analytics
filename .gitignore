@@ -7,6 +7,9 @@ data/processed/*.duckdb.wal
 data/processed/.*.building-*.duckdb
 data/processed/.*.building-*.duckdb.wal
 
+# Generated operational reports
+reports/database-health.json
+
 # Python environments and caches
 .venv/
 __pycache__/

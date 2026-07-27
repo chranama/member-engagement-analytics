@@ -17,7 +17,7 @@ from uuid import UUID, uuid4
 
 import duckdb
 
-from member_engagement_analytics.validation import (
+from member_engagement_analytics.raw_data_validation import (
     CUSTOMER_TYPES,
     DATASET_NAME,
     DATASET_SOURCE_URL,
@@ -126,7 +126,11 @@ def _expected_customer_definition() -> list[tuple[str, str]]:
     return [(column, data_type.upper()) for column, data_type in CUSTOMER_TYPES.items()]
 
 
-def _schema_checks(connection: duckdb.DuckDBPyConnection) -> list[CheckResult]:
+def database_structure_checks(
+    connection: duckdb.DuckDBPyConnection,
+) -> list[CheckResult]:
+    """Validate the required database schemas, tables, columns, and types."""
+
     expected_schemas = {"source", "analytics", "meta"}
     observed_schemas = {
         str(row[0])
@@ -226,7 +230,7 @@ def _post_load_checks(
     connection: duckdb.DuckDBPyConnection,
     report: PreflightReport,
 ) -> list[CheckResult]:
-    checks = _schema_checks(connection)
+    checks = database_structure_checks(connection)
 
     customer_rows = int(
         _fetch_scalar(connection, "SELECT count(*) FROM source.customers")

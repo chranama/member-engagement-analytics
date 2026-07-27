@@ -9,16 +9,16 @@ from pathlib import Path
 
 import pytest
 
-from member_engagement_analytics.preflight import main
-from member_engagement_analytics.reporting import (
-    render_preflight_summary,
-    write_preflight_json,
-)
-from member_engagement_analytics.validation import (
+from member_engagement_analytics.cli import main
+from member_engagement_analytics.raw_data_validation import (
     CheckResult,
     CheckStatus,
     PreflightReport,
     inspect_raw_sources,
+)
+from member_engagement_analytics.render import (
+    render_preflight_summary,
+    write_preflight_json,
 )
 
 
@@ -85,6 +85,7 @@ def test_cli_returns_one_for_blocking_data_failure(
 
     exit_code = main(
         [
+            "preflight",
             "--raw-dir",
             str(tmp_path / "missing"),
             "--output",
